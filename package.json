@@ -1,0 +1,23 @@
+{
+  "name": "fly",
+  "version": "0.0.1",
+  "description": "Fly is light web server.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/markstien/fly.git"
+  },
+  "keywords": [
+    "web",
+    "server",
+    "http",
+    "demo",
+    "net"
+  ],
+  "author": "Markstien Song",
+  "license": "MIT"
+}
