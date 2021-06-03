@@ -4,7 +4,7 @@
   "description": "Fly is light web server.",
   "main": "main.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:httpParser": "tsc && node ./dist/src/httpParser.js",
     "start": "tsc && node ./dist/main.js"
   },
   "repository": {
@@ -21,6 +21,7 @@
   "author": "Markstien Song",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^15.9.0",
     "typescript": "^4.3.2"
   }
 }
