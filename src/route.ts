@@ -24,11 +24,9 @@ interface RouteHandlerInterface {
     add(router:RouterInterface):void
 }
 
-class Router implements RouteHandlerInterface {
-    handlers: Request[];
-
-    add(router: RouterInterface): void {
-    }
+export function Route() {
 
 }
+
+
 
