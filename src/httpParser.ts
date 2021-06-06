@@ -27,10 +27,12 @@ const headersMap = (httpLines: string[])=>{
 
 const httpParser = (data:String) => {
     const [head,...body] =  data.toString().split('\\r\\n\\r\\n');
-    console.log("body",body);
+
     const [firstLine,...otherLines] = head.toString().split('\\r\\n');
     const [method,path,httpVersion] = firstLine.trim().split(' ');
+
     const headers = headersMap(otherLines);
+
     return { method, path, httpVersion, headers };
 };
 

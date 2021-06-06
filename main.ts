@@ -11,10 +11,10 @@ server.on('connection',(socket) => {
 
     socket.setEncoding('binary');
 
+
     socket.on('data',(data) => {
-        console.log(JSON.stringify(data));
         const { method, path, headers } = parser(JSON.stringify(data));
-        console.log(headers);
+        console.log(method,path);
 
         socket.write(`HTTP/1.1 200 OK
 Content-Type: text/plain
@@ -43,3 +43,4 @@ server.on('listening', () => {
     const { port } = server.address();
     console.log(`Fly服务器运行在 http://localhost:${port}`);
 })
+

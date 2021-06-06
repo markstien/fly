@@ -5,6 +5,7 @@
   "main": "main.ts",
   "scripts": {
     "test:httpParser": "tsc && node ./dist/src/httpParser.js",
+    "test:Fly": "tsc && node ./dist/src/Fly.js",
     "start": "tsc && node ./dist/main.js"
   },
   "repository": {
