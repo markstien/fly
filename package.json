@@ -7,6 +7,8 @@
     "test:httpParser": "tsc && node ./dist/src/httpParser/httpParser.js",
     "test:Fly": "tsc && node ./dist/src/Fly.js",
     "test:Router": "tsc && node ./dist/src/Router.js",
+    "test:utils": "tsc && node ./dist/src/httpParser/dataParser/utils.js",
+    "test:dataParser": "tsc && node ./dist/src/httpParser/dataParser/dataParser.js",
     "start": "tsc && node ./dist/main.js"
   },
   "repository": {

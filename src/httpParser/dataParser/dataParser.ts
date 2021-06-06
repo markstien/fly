@@ -1,4 +1,12 @@
-import { path } from "./interfaces";
+import { path, ContentType } from "../interfaces";
+import { contentTypeIncluded } from "./utils";
+import {
+    TextPlain,
+    MultipartFromDate,
+    ApplicationXWWWFromUrlencoded,
+    ApplicationJson
+} from "./interfaces";
+
 
 export const getParams = (path:path) => {
     const lastSlash = path.lastIndexOf("/");
@@ -20,7 +28,23 @@ export const getParams = (path:path) => {
     })
 }
 
-export const getData = () => {};
+const typeHandleMap = new Map([
+    [TextPlain,() =>{}],
+    [MultipartFromDate,()=>{}],
+    [ApplicationXWWWFromUrlencoded,()=>{}],
+    [ApplicationJson,()=>{}]
+])
+
+export const getData = (contentType: ContentType,body: string) => {
+    const type = contentTypeIncluded(contentType);
+    if(type===""){
+        return "default"
+    }
+
+};
+
+
+
 
 /**
  * Tests
@@ -36,3 +60,9 @@ const paths = [
 paths.map( path => {
     console.log(getParams(path));
 })*/
+
+
+getData(
+    "application/json",
+    ""
+);

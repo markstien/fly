@@ -15,3 +15,6 @@ export interface Request {
 export type Headers = Map<string,string>
 
 export type path = string;
+
+export type ContentType = string;
+
