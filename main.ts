@@ -1,5 +1,5 @@
 import net from 'net';
-import parser from './src/httpParser';
+import parser from './src/httpParser/httpParser';
 
 const PORT = 8080;
 

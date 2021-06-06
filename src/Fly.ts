@@ -1,5 +1,5 @@
 import net from 'net';
-import parser from './httpParser';
+import parser from './httpParser/httpParser';
 
 export interface FlyInterface {
     run(port:number,callback:(port:number)=>void):void
@@ -15,10 +15,15 @@ class Fly implements FlyInterface{
         this.server.on('connection',(socket) => {
             socket.setEncoding('binary');
             socket.on('data',(data) => {
+                console.log(data);
                 const { method, path, headers } = parser(JSON.stringify(data));
+                //todo 路由
+
                 socket.write(`HTTP/1.1 200 OK
 Content-Type: text/plain
 Content-Length: 5
+Access-Control-Allow-Origin:*
+Access-Control-Allow-Headers:*
 
 hello`);
             });
@@ -45,12 +50,13 @@ hello`);
 }
 
 
-
 /**
  * Test
  */
+
 const fly =new Fly();
 
 fly.run(8080,(port) =>
     console.log(`Fly服务器运行在:http://localhost:${port}`)
 );
+
