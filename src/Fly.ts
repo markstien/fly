@@ -15,7 +15,7 @@ class Fly implements FlyInterface{
         this.server.on('connection',(socket) => {
             socket.setEncoding('binary');
             socket.on('data',(data) => {
-                console.log(data);
+                //console.log(data);
                 const { method, path, headers } = parser(JSON.stringify(data));
                 //todo 路由
 

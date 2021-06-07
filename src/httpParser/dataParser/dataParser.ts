@@ -7,12 +7,11 @@ import {
     ApplicationJson
 } from "./interfaces";
 
-
 export const getParams = (path:path) => {
     const lastSlash = path.lastIndexOf("/");
     const paramsString = path.substring(lastSlash+1);
     if(paramsString===""){
-        return {};
+        return null;
     }
     //以“？”分割
     const question = paramsString.split("?")[1];
@@ -29,11 +28,36 @@ export const getParams = (path:path) => {
 }
 
 const typeHandleMap = new Map([
-    [TextPlain,() =>{}],
+    [TextPlain,(data:string) =>{}],
     [MultipartFromDate,()=>{}],
     [ApplicationXWWWFromUrlencoded,()=>{}],
     [ApplicationJson,()=>{}]
 ])
+
+export const textPlain = (string: String) => {
+    const result = Object();
+    //以“\r\n”划分
+    const str = string.trim().split(`\\r\\n`);
+    //以“=”划分
+    const params = str.map( s=> {
+        if(s!==""){
+          return s.split("=");
+        }
+    });
+
+    const length = params.length;
+
+    for (let i=0;i<length;i++){
+        const param = params[i];
+        if(param!==undefined){
+            const key = param[0];
+            const value = param[1];
+            result[key] = value;
+        }
+    }
+
+    return result;
+};
 
 export const getData = (contentType: ContentType,body: string) => {
     const type = contentTypeIncluded(contentType);
@@ -42,8 +66,6 @@ export const getData = (contentType: ContentType,body: string) => {
     }
 
 };
-
-
 
 
 /**
@@ -62,7 +84,6 @@ paths.map( path => {
 })*/
 
 
-getData(
-    "application/json",
-    ""
-);
+//getData("text/plain", 'name=name\\r\\npassword=password\\r\\n');
+
+//textPlain('name=name\r\npassword=password\r\n');
