@@ -1,6 +1,6 @@
 import { Request } from "./interfaces";
 import { headersMap } from "./header";
-import { textPlain } from "./dataParser/dataParser";
+import { textPlain } from "./methods/dataParser";
 
 const httpParser = (data:String):Request => {
     const httpMessage = data.substring(1,data.length-1);
