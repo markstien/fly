@@ -10,12 +10,12 @@ Fly is a web server.
 
 ### httpParser
 
-解析http协议
+解析http协议,具体实现POST,GET,PUT.....等
 
 ### Router
 
-实现路由功能（get,post...）
+实现路由功能，用于编写接口
 
-## 单元测试
+### Handler 
 
-https://segmentfault.com/a/1190000019793948?utm_source=tag-newest
+多线程、协程，用来相应http请求

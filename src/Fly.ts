@@ -1,11 +1,11 @@
 import net from 'net';
-import parser from './httpParser/httpParser';
+import { httpParser } from './httpParser/httpParser';
 
-export interface FlyInterface {
+interface FlyInterface {
     run(port:number,callback:(port:number)=>void):void
 }
 
-class Fly implements FlyInterface{
+export class Fly implements FlyInterface{
     private  PORT:number = 9090
     private server:net.Server
 
@@ -15,10 +15,8 @@ class Fly implements FlyInterface{
         this.server.on('connection',(socket) => {
             socket.setEncoding('binary');
             socket.on('data',(data) => {
-                //console.log(data);
-                const { method, path, headers } = parser(JSON.stringify(data));
+                const { method, path, headers } = httpParser(JSON.stringify(data));
                 //todo 路由
-
                 socket.write(`HTTP/1.1 200 OK
 Content-Type: text/plain
 Content-Length: 5
@@ -48,15 +46,3 @@ hello`);
         this.server.on('listening', ()=>callback(this.PORT));
     }
 }
-
-
-/**
- * Test
- */
-
-const fly =new Fly();
-
-fly.run(8080,(port) =>
-    console.log(`Fly服务器运行在:http://localhost:${port}`)
-);
-
