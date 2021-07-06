@@ -1,11 +1,7 @@
 import net from 'net';
 import { httpParser } from './httpParser/httpParser';
 
-interface FlyInterface {
-    run(port:number,callback:(port:number)=>void):void
-}
-
-export class Fly implements FlyInterface{
+export class Fly {
     private  PORT:number = 9090
     private server:net.Server
 
@@ -15,7 +11,9 @@ export class Fly implements FlyInterface{
         this.server.on('connection',(socket) => {
             socket.setEncoding('binary');
             socket.on('data',(data) => {
-                const { method, path, headers } = httpParser(JSON.stringify(data));
+                //console.log(data);
+                const { method, path, headers, body } = httpParser(JSON.stringify(data));
+                console.log(method,path,headers,body);
                 //todo 路由
                 socket.write(`HTTP/1.1 200 OK
 Content-Type: text/plain

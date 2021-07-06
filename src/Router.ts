@@ -41,7 +41,5 @@ class Router implements Router {
                return routing;
            }
         });
-
     }
 }
-

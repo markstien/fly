@@ -7,7 +7,7 @@ export interface Request {
     method:string,
     path:string,
     params?:string,
-    body?:string,
+    body?:string[],
     headers:Headers,
     httpVersion:string
 }

@@ -1,3 +1,4 @@
+/*
 import net from 'net';
 import parser from './src/httpParser/httpParser';
 
@@ -44,3 +45,4 @@ server.on('listening', () => {
     console.log(`Fly服务器运行在 http://localhost:${port}`);
 })
 
+*/

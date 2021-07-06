@@ -1,7 +1,12 @@
 import { HeaderInterface, Headers } from "./interfaces";
 
-export const headersMap = (httpLines: string[]): Headers=>{
-    const headerLines:HeaderInterface[] = httpLines.map( (line:string) => {
+/**
+ * 解析http报文头部（header）
+ * @param headLines 以换行分组后的http报文头部
+ * @return Headers header 键值
+ */
+export const headersMap = (headLines: string[]): Headers=>{
+    const headerLines:HeaderInterface[] = headLines.map( (line:string) => {
         const [header,...content] = line.split(':');
         if(header==="Host"||header==="host"){
             return {
