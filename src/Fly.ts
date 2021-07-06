@@ -1,7 +1,9 @@
 import net from 'net';
 import { httpParser } from './httpParser/httpParser';
+import { Router } from "./Router";
 
 export class Fly {
+    public router = new Router();
     private  PORT:number = 9090
     private server:net.Server
 
@@ -12,8 +14,9 @@ export class Fly {
             socket.setEncoding('binary');
             socket.on('data',(data) => {
                 //console.log(data);
-                const { method, path, headers, body } = httpParser(JSON.stringify(data));
-                console.log(method,path,headers,body);
+                const request = httpParser(JSON.stringify(data));
+                this.router.handle(request);
+
                 //todo 路由
                 socket.write(`HTTP/1.1 200 OK
 Content-Type: text/plain

@@ -6,40 +6,30 @@
  * })
  */
 
-interface Request {
-    path:string
-    // @ts-ignore
-    headers: object
-    body?:string
-    params?:string
+import {Method, Request, Routing} from "./interface";
+
+function findRouting(method:Method, path:string,routingList: Routing[]) {
+    const length = routingList.length;
+
+    for (let i=0;i<length;i++){
+        if( method === routingList[i].method && path === routingList[i].path){
+            return routingList[i];
+        }
+    }
 }
 
-/**
- * 路由规则
- */
-interface Routing {
-    method:string
-    path:string
-    handler(request: Request):void
-}
+export class Router {
+    private routingList: Routing[] = [];
 
-interface Router {
-    add(routing:Routing):void
-}
-
-
-class Router implements Router {
-    private routingList:Routing[]=[]
-
-    add(routing: Routing) {
-      this.routingList.push(routing);
+    handle(request: Request) {
+        const { method, path } = request;
+        const routing = findRouting(method,path,this.routingList);
+        if(routing){
+            routing.handler(request);
+        }
     }
 
-    bind(path:string){
-        const routingList = this.routingList.map( routing => {
-           if(path === routing.path){
-               return routing;
-           }
-        });
+    add(routing: Routing){
+        this.routingList.push(routing)
     }
 }

@@ -1,4 +1,4 @@
-import { Request } from "./interfaces";
+import { Request } from "../interface";
 import { headersMap } from "./header";
 
 export const httpParser = (data:String):Request => {
@@ -7,9 +7,10 @@ export const httpParser = (data:String):Request => {
     const [head,...body] =  httpMessage.split('\\r\\n\\r\\n');
     const [firstLine,...otherLines] = head.toString().split('\\r\\n');
 
-    const [method,path,httpVersion] = firstLine.trim().split(' ');
+    const [ method,path,httpVersion] = firstLine.trim().split(' ');
     const headers = headersMap(otherLines);
 
+    //@ts-ignore
     return { method, path, httpVersion, headers, body };
 };
 

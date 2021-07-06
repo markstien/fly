@@ -1,4 +1,4 @@
-import { Request } from "../interfaces";
+import { Request } from "../../interface";
 
 const getParams = (path:string) => {
     const lastSlash = path.lastIndexOf("/");
@@ -19,4 +19,6 @@ const getParams = (path:string) => {
         return result;
     })
 }
+
+
 
