@@ -5,6 +5,8 @@
   "main": "main.ts",
   "scripts": {
     "test:Fly": "tsc && node ./dist/test/testFly.js",
+    "test:main": "tsc && node ./dist/test/main.js",
+    "test:response": "tsc && node ./dist/test/ResponseTest.js",
     "start": "tsc && node ./dist/main.js"
   },
   "repository": {

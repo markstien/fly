@@ -15,7 +15,7 @@ export class Fly {
             socket.on('data',(data) => {
                 //console.log(data);
                 const request = httpParser(JSON.stringify(data));
-                this.router.handle(request);
+                this.router.handle(request,{});
 
                 //todo 路由
                 socket.write(`HTTP/1.1 200 OK

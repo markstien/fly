@@ -1,15 +1,17 @@
 import { Fly } from "../src/Fly";
-import { Request, Routing } from "../src/interface";
+import { Request, Routing, Response } from "../src/interface";
 
 const fly =new Fly();
 
 const firstRouting:Routing = {
     method:"GET",
     path:"/aaa",
-    handler(request: Request) {
-        console.log("This is handler!")
+    handler(request: Request,response: Response) {
+        console.log("This is handler!");
     }
 }
+
+
 fly.router.add(firstRouting);
 
 
