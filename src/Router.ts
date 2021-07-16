@@ -6,7 +6,8 @@
  * })
  */
 
-import {Method, Request, Routing, Response } from "./interface";
+import {Method, Request, Routing } from "./interface";
+import { Response } from './httpParser/Response'
 
 function findRouting(method:Method, path:string,routingList: Routing[]) {
     const length = routingList.length;

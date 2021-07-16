@@ -1,3 +1,5 @@
+import { Response } from './httpParser/Response'
+
 type Method = "GET" | "POST";
 
 type Header = Map<any,any>;
@@ -11,10 +13,6 @@ export interface Request {
     httpVersion:string
 }
 
-export interface Response {
-    headers?: Header[]
-    body?:string
-}
 /**
  * 路由规则
  */

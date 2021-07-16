@@ -12,12 +12,15 @@ hello`
 
 import { Header } from "../interface";
 
-interface ResInterface {
-    addHeader(header: Header):void
-    Headers(headers: Header[]):void
+export interface Response {
+    addHeader(key:string,value:string):void
+    headers(header: Header):void
     sendText(text:string):void
 }
 
+/**
+ * 默认报文，数据类
+ */
 export class DefaultHeader {
     public status:number =200;
     public httpVersion:string = "HTTP/1.1";
@@ -27,7 +30,11 @@ export class DefaultHeader {
     public extraHeaders:Header = new Map<any, any>();
 }
 
-export function headerToSting(defaultHeader: DefaultHeader){
+/**
+ * header转换成http响应报文
+ * @param defaultHeader
+ */
+export function headerToMessage(defaultHeader: DefaultHeader){
     let string = `${defaultHeader.httpVersion} ${defaultHeader.status} OK\r\n`;
     string+=`Content-Type:${defaultHeader.contentType}\r\n`;
     string+=`Content-Length:${defaultHeader.body.length}\r\n`;
@@ -40,17 +47,24 @@ export function headerToSting(defaultHeader: DefaultHeader){
     return string;
 }
 
-function response():ResInterface {
+export function ResponseInstance(socketWrite:(text:string)=>void):Response {
     const defaultHeader = new DefaultHeader();
 
-    return {
-        addHeader(header: Header) {
-        },
-        Headers(headers: Header[]) {
-        },
-        sendText(text: string) {
-        }
+    function addHeader(key:string,value:string) {
+        defaultHeader.extraHeaders.set(key,value);
     }
+
+    function headers(header: Header) {
+        header.forEach( (value,key) =>{
+            defaultHeader.extraHeaders.set(key,value);
+        })
+    }
+
+    function sendText(text:string){
+        defaultHeader.body = text;
+        socketWrite(headerToMessage(defaultHeader));
+    }
+
+    return { addHeader, headers,sendText }
 }
 
-export const Response = response();

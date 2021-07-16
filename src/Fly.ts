@@ -1,10 +1,11 @@
 import net from 'net';
 import { httpParser } from './httpParser/httpParser';
 import { Router } from "./Router";
+import { ResponseInstance } from "./httpParser/Response";
 
 export class Fly {
     public router = new Router();
-    private  PORT:number = 9090
+    private PORT:number = 9090
     private server:net.Server
 
     constructor() {
@@ -13,18 +14,12 @@ export class Fly {
         this.server.on('connection',(socket) => {
             socket.setEncoding('binary');
             socket.on('data',(data) => {
-                //console.log(data);
+                const socketWrite = (text:string) => {
+                    socket.write(text);
+                }
                 const request = httpParser(JSON.stringify(data));
-                this.router.handle(request,{});
-
-                //todo 路由
-                socket.write(`HTTP/1.1 200 OK
-Content-Type: text/plain
-Content-Length: 5
-Access-Control-Allow-Origin:*
-Access-Control-Allow-Headers:*
-
-hello`);
+                const response = ResponseInstance(socketWrite);
+                this.router.handle(request,response);
             });
 
             socket.on('close',(hadError) => {
