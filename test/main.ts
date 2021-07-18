@@ -1,8 +1,9 @@
-const a = new Map<any,any>();
+import { isStaticRouter } from "../src/Router";
 
-a.set("first",1);
-a.set("second",2);
+const staticRoutings = [
+    "/static"
+]
 
-a.set("first",2)
-
-console.log(a);
+//console.assert(isStaticRouter("/static/", "", staticRoutings));
+console.assert(isStaticRouter("static/", "", staticRoutings));
+console.assert(isStaticRouter("static", "", staticRoutings));

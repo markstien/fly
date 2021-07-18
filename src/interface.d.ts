@@ -7,7 +7,7 @@ type Header = Map<any,any>;
 export interface Request {
     method:Method,
     path:string,
-    params?:string,
+    params?:Map<any,any>,
     body?:string[],
     headers:Headers,
     httpVersion:string

@@ -12,6 +12,8 @@ const firstRouting:Routing = {
     }
 }
 
+fly.router.staticRouter("/static")
+
 fly.router.add(firstRouting);
 
 fly.run(8080,(port) =>

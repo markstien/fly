@@ -1,15 +1,6 @@
 /**
  * 拼接响应http报文
  */
-
-`HTTP/1.1 200 OK
-Content-Type: text/plain
-Content-Length: 5
-Access-Control-Allow-Origin:*
-Access-Control-Allow-Headers:*
-
-hello`
-
 import { Header } from "../interface";
 
 export interface Response {
