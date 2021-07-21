@@ -1,9 +1,6 @@
-import { isStaticRouter } from "../src/Router";
+import fs from 'fs';
+import * as path from "path";
 
-const staticRoutings = [
-    "/static"
-]
-
-//console.assert(isStaticRouter("/static/", "", staticRoutings));
-console.assert(isStaticRouter("static/", "", staticRoutings));
-console.assert(isStaticRouter("static", "", staticRoutings));
+fs.readFile("D:/Fly/test/static/index.html",{encoding:"utf-8"},(error,data)=>{
+    console.log(data);
+});

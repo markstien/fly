@@ -54,6 +54,7 @@ const headers = new Map<any,any>([
 ]);
 
 const response2 = ResponseInstance((text:string)=>{
+    console.log(text);
     console.assert(
         JSON.stringify(DefaultHeaderResult2)+1===JSON.stringify(text),
         "同时添加多个header测试"

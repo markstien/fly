@@ -6,13 +6,13 @@ const fly =new Fly();
 
 const firstRouting:Routing = {
     method:"GET",
-    path:"/aaa",
+    path:"/",
     handler(request: Request,response: Response) {
         response.sendText("Hello,world!");
     }
 }
 
-fly.router.staticRouter("/static")
+fly.router.staticRouter({ path:"/static",absolutePath:"D:/Fly/test/static"})
 
 fly.router.add(firstRouting);
 

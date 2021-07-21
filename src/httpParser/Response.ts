@@ -7,6 +7,7 @@ export interface Response {
     addHeader(key:string,value:string):void
     headers(header: Header):void
     sendText(text:string):void
+    send(body:any):void
 }
 
 /**
@@ -38,7 +39,7 @@ export function headerToMessage(defaultHeader: DefaultHeader){
     return string;
 }
 
-export function ResponseInstance(socketWrite:(text:string)=>void):Response {
+export function ResponseInstance(socketWrite:(text:any)=>void):Response {
     const defaultHeader = new DefaultHeader();
 
     function addHeader(key:string,value:string) {
@@ -56,6 +57,14 @@ export function ResponseInstance(socketWrite:(text:string)=>void):Response {
         socketWrite(headerToMessage(defaultHeader));
     }
 
-    return { addHeader, headers,sendText }
-}
+    function send(body:any) {
+        console.log("?")
+        socketWrite(`HTTP/1.1 200 OK\r\n`);
+        socketWrite(`Content-Type:image/jpeg\r\n`);
+        socketWrite(`Content-Length:1384\r\n`);
+        socketWrite(`\r\n`);
+        socketWrite(body);
+    }
 
+    return { addHeader, headers,sendText, send }
+}
