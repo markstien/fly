@@ -2,7 +2,6 @@ import net from 'net';
 import { httpParser } from './httpParser/httpParser';
 import { Router } from "./Router";
 import { ResponseInstance } from "./httpParser/Response";
-import * as fs from "fs";
 
 export class Fly {
     public router = new Router();
@@ -17,25 +16,12 @@ export class Fly {
                 socket.write(data);
             }
             socket.setEncoding('binary');
+
             socket.on('data',(data) => {
                 const request = httpParser(JSON.stringify(data));
                 const response = ResponseInstance(socketWrite);
                 this.router.handle(request,response);
-
-                /*
-                fs.readFile("D:/Fly/test/static/c.jpg",(error,data) => {
-                    if(!error){
-                        socket.write(`HTTP/1.1 200 OK\r\n`);
-                        socket.write(`Content-Type:image/jpeg\r\n`);
-                        socket.write(`Content-Length:1384\r\n`);
-                        socket.write(`\r\n`);
-                        socket.write(data);
-                        socket.end();
-                    }else {
-                        console.log("fuck!")
-                    }
-                })
-                */
+                socket.end();
             });
 
             socket.on('close',(hadError) => {
