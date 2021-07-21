@@ -1,33 +1,36 @@
-import { headerToMessage, DefaultHeader, ResponseInstance } from "../src/httpParser/Response";
+import { spliceHeader, DefaultHeader, ResponseInstance } from "../src/httpParser/Response";
 
-/**
- * 报文拼接
- */
-const DefaultHeaderResult = "HTTP/1.1 200 OK\r\nContent-Type:text/plain\r\nContent-Length:5\r\n\r\n12345";
-const defaultHeader = new DefaultHeader();
-defaultHeader.body = "12345";
-console.assert(
-    JSON.stringify(headerToMessage(defaultHeader))===JSON.stringify(DefaultHeaderResult),
-    "header转换成http响应报文::没有通过测试"
-);
+function spliceHeaderTest() {
+    const DefaultHeaderResult =
+        "HTTP/1.1 200 OK\r\n" +
+        "Content-Type:text/plain\r\n" +
+        "Content-Length:5\r\n";
+    const defaultHeader = new DefaultHeader();
 
-/**
- * addHeader测试
- */
-const DefaultHeaderResult1 =
-    "HTTP/1.1 200 OK\r\n" +
-    "Content-Type:text/plain\r\n" +
-    "Content-Length:5\r\n" +
-    "x-poweredBy:your-name\r\n"+
-    "\r\n12345";
-const response = ResponseInstance((text:string)=>{
     console.assert(
-        JSON.stringify(DefaultHeaderResult1)===JSON.stringify(text),
-        "addHeader测试失败"
-    )
-} );
-response.addHeader("x-poweredBy","your-name");
-response.sendText("12345")
+        JSON.stringify(spliceHeader(defaultHeader))===JSON.stringify(DefaultHeaderResult),
+        "spliceHeaderTest:failed."
+    );
+}
+
+function addHeaderTest() {
+    const DefaultHeaderResult1 =
+        "HTTP/1.1 200 OK\r\n" +
+        "Content-Type:text/plain\r\n" +
+        "Content-Length:5\r\n" +
+        "x-poweredBy:your-name\r\n"+
+        "\r\n"+
+        "123";
+    const socketWrite = (data:any) => {
+        console.assert(
+            JSON.stringify(DefaultHeaderResult1)===JSON.stringify(data),
+            "addHeaderTest:failed."
+        )
+    }
+    const response = ResponseInstance(socketWrite);
+    response.addHeader("x-poweredBy","your-name");
+    response.sendText("123")
+}
 
 /**
  * 同时添加多个header测试

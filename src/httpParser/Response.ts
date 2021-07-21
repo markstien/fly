@@ -49,9 +49,7 @@ export function ResponseInstance(socketWrite:(text:any)=>void):Response {
     }
 
     function sendText(text:string){
-        socketWrite(spliceHeader(defaultHeader));
-        socketWrite(`\r\n`);
-        socketWrite(text);
+        socketWrite(spliceHeader(defaultHeader)+"\r\n"+text);
     }
 
     function send(body:any) {
