@@ -1,4 +1,4 @@
-import { isStaticRouter } from "../src/Router";
+import { isStaticRouter } from "../src/Router/Router";
 
 const staticRoutings = new Map([
     ["/static","/D:Fly/test/static"]
@@ -16,7 +16,7 @@ paths.map( path =>{
     console.assert(isStaticRouter(path,staticRoutings))
 })
 
-import { findAbsolutePath } from "../src/Router";
+import { findAbsolutePath } from "../src/Router/Router";
 const sts = new Map([
     ["/static","D:Fly/test/static"],
     ["/public","/D:public"]

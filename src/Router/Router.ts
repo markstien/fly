@@ -1,13 +1,5 @@
-/**
- * server.route.add({
- *     method,
- *     path,
- *     params||data 结构类型
- * })
- */
-
-import {Method, Request, Routing } from "./interface";
-import { Response } from './httpParser/response'
+import {Method, Request, Routing } from "../interface";
+import { Response } from '../httpParser/response'
 import * as fs from "fs";
 
 interface StaticPath {

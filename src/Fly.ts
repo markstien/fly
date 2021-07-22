@@ -1,6 +1,6 @@
 import net from 'net';
 import { requestParser } from './httpParser/requestParser';
-import { Router } from "./Router";
+import { Router } from "./Router/Router";
 import { ResponseInstance } from "./httpParser/response";
 
 export class Fly {
