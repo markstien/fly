@@ -1,4 +1,4 @@
-import { spliceHeader, DefaultHeader, ResponseInstance } from "../src/httpParser/Response";
+import { spliceHeader, DefaultHeader, ResponseInstance } from "../src/httpParser/response";
 
 function spliceHeaderTest() {
     const DefaultHeaderResult =

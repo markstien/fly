@@ -1,11 +1,11 @@
 /**
  * 拼接响应http报文
  */
-import { Header } from "../interface";
+import { Headers } from "../interface";
 
 export interface Response {
     addHeader(key:string,value:string):void
-    addHeaders(header: Header):void
+    addHeaders(header: Headers):void
     sendText(text:string):void
     send(body:any):void
 }
@@ -16,7 +16,7 @@ export interface Response {
 export class DefaultHeader {
     public status:number =200;
     public httpVersion:string = "HTTP/1.1";
-    public headers:Header = new Map<any, any>();
+    public headers:Headers = new Map<any, any>();
 
     constructor() {
         this.headers.set("Content-Type","text/plain");
@@ -42,7 +42,7 @@ export function ResponseInstance(socketWrite:(text:any)=>void):Response {
         defaultHeader.headers.set(key,value);
     }
 
-    function addHeaders(header: Header) {
+    function addHeaders(header: Headers) {
         header.forEach( (value,key) =>{
             defaultHeader.headers.set(key,value);
         })

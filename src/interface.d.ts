@@ -1,8 +1,8 @@
-import { Response } from './httpParser/Response'
+import { Response } from './httpParser/response'
 
 type Method = "GET" | "POST";
 
-type Header = Map<any,any>;
+type Headers = Map<any,any>;
 
 export interface Request {
     method:Method,

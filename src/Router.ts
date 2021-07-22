@@ -7,7 +7,7 @@
  */
 
 import {Method, Request, Routing } from "./interface";
-import { Response } from './httpParser/Response'
+import { Response } from './httpParser/response'
 import * as fs from "fs";
 
 interface StaticPath {

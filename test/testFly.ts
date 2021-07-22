@@ -1,6 +1,6 @@
 import { Fly } from "../src/Fly";
 import { Request, Routing } from "../src/interface";
-import { Response } from "../src/httpParser/Response";
+import { Response } from "../src/httpParser/response";
 
 const fly =new Fly();
 

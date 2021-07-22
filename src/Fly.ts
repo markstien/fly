@@ -1,7 +1,7 @@
 import net from 'net';
-import { httpParser } from './httpParser/httpParser';
+import { requestParser } from './httpParser/requestParser';
 import { Router } from "./Router";
-import { ResponseInstance } from "./httpParser/Response";
+import { ResponseInstance } from "./httpParser/response";
 
 export class Fly {
     public router = new Router();
@@ -18,7 +18,7 @@ export class Fly {
             socket.setEncoding('binary');
 
             socket.on('data',(data) => {
-                const request = httpParser(JSON.stringify(data));
+                const request = requestParser(JSON.stringify(data));
                 const response = ResponseInstance(socketWrite);
                 this.router.handle(request,response);
                 socket.end();
