@@ -49,7 +49,12 @@ export function ResponseInstance(socketWrite:(text:any)=>void):Response {
     }
 
     function sendText(text:string){
-        socketWrite(spliceHeader(defaultHeader)+"\r\n"+text);
+        if(text){
+            defaultHeader.headers.set("Content-Length",text.length);
+            socketWrite(spliceHeader(defaultHeader)+"\r\n"+text);
+        }else {
+            socketWrite(spliceHeader(defaultHeader));
+        }
     }
 
     function send(body:any) {
