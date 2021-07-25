@@ -11,7 +11,7 @@ export interface Socket {
 export interface Response {
     addHeader(key:string,value:string):void
     addHeaders(header: Headers):void
-    sendText(text:string,status?:string):void
+    sendText(text:string,status?:string,code?:number):void
     send(body:any):void
 }
 
@@ -25,7 +25,7 @@ export class DefaultHeader {
     public headers:Headers = new Map<any, any>();
 
     constructor() {
-        this.headers.set("Content-Type","text/plain");
+        this.headers.set("Content-Type","text/plain; charset=UTF-8");
     }
 }
 
@@ -54,16 +54,17 @@ export function ResponseInstance(socket: Socket):Response {
         })
     }
 
-    function sendText(text:string,status?:string){
+    function sendText(text:string,status?:string,code?:number){
         if(status){
             defaultHeader.status = status;
         }
-        if(text){
-            defaultHeader.headers.set("Content-Length",text.length);
-            socket.write(spliceHeader(defaultHeader)+"\r\n"+text);
-        }else {
-            socket.write(spliceHeader(defaultHeader));
+        if(code){
+            defaultHeader.code = code;
         }
+        defaultHeader.headers.set("Content-Length",Buffer.byteLength(text,'utf-8'));
+        socket.write(spliceHeader(defaultHeader)+
+            "\r\n"+
+            text);
         socket.end();
     }
 

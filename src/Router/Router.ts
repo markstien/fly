@@ -89,11 +89,14 @@ export class Router {
                     }
                     response.send(data);
                 }else {
-                    //503
+                    //500
+                    response.sendText("服务器内部错误！","Internal Server Error",500);
                 }
             });
         }else {
             //404
+            response.sendText("没有相关文件！","Not Found",404);
+
         }
     }
 }

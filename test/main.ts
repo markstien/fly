@@ -1,6 +1,7 @@
-import fs from 'fs';
-import * as path from "path";
+import { Buffer } from 'buffer';
 
-fs.readFile("D:/Fly/test/static/index.html",{encoding:"utf-8"},(error,data)=>{
-    console.log(data);
-});
+const str = '服务器内部错误';
+
+console.log(`${str}: ${str.length} characters, ` +
+    `${Buffer.byteLength(str, 'utf8')} bytes`);
+// Prints: ½ + ¼ = ¾: 9 characters, 12 bytes
