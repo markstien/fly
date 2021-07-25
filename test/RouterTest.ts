@@ -1,5 +1,6 @@
 import { isStaticRouter } from "../src/Router/Router";
-
+import { getFileExt } from "../src/Router/fileExtensionHeaderMap";
+/*
 const staticRoutings = new Map([
     ["/static","/D:Fly/test/static"]
 ])
@@ -32,3 +33,10 @@ const paths1 = [
 paths1.map( path => {
     console.log(path,findAbsolutePath(path,sts))
 })
+*/
+
+function getFileExtTest() {
+    const path = "D:/Fly/test/static/c.jpg";
+    const expected = "jpg";
+    console.assert(getFileExt(path)===expected,"getFileExt:failed.");
+}
