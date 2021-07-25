@@ -1,6 +1,7 @@
 import {Method, Request, Routing } from "../interface";
 import { Response } from '../httpParser/response'
 import * as fs from "fs";
+import {fileExtensionHeaderMap, getFileExt} from "./fileExtensionHeaderMap";
 
 interface StaticPath {
     path:string,
@@ -78,9 +79,14 @@ export class Router {
         const absolutePath = findAbsolutePath(path,this.staticRoutings);
 
         if(absolutePath){
-            fs.readFile("D:/Fly/test/static/c.jpg",(error,data) => {
+            fs.readFile(absolutePath,(error,data) => {
                 if(!error){
-                    response.addHeader("Content-Type","image/jpeg");
+                    const fileExt = getFileExt(absolutePath);
+                    const contentType = fileExtensionHeaderMap.get(fileExt);
+
+                    if(contentType){
+                        response.addHeader("Content-Type",contentType);
+                    }
                     response.send(data);
                 }else {
                     //503

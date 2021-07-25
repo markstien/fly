@@ -1,5 +1,6 @@
 import { spliceHeader, DefaultHeader, ResponseInstance } from "../src/httpParser/response";
 
+/*
 function spliceHeaderTest() {
     const DefaultHeaderResult =
         "HTTP/1.1 200 OK\r\n" +
@@ -71,3 +72,4 @@ addHeadersTest();
 
 
 
+*/

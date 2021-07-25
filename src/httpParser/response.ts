@@ -3,10 +3,15 @@
  */
 import { Headers } from "../interface";
 
+export interface Socket {
+    write(data: any): void;
+    end(): void;
+}
+
 export interface Response {
     addHeader(key:string,value:string):void
     addHeaders(header: Headers):void
-    sendText(text:string):void
+    sendText(text:string,status?:string):void
     send(body:any):void
 }
 
@@ -14,7 +19,8 @@ export interface Response {
  * 默认报文，数据类
  */
 export class DefaultHeader {
-    public status:number =200;
+    public code:number =200;
+    public status:string = "OK";
     public httpVersion:string = "HTTP/1.1";
     public headers:Headers = new Map<any, any>();
 
@@ -28,14 +34,14 @@ export class DefaultHeader {
  * @param defaultHeader
  */
 export function spliceHeader(defaultHeader: DefaultHeader){
-    let string = `${defaultHeader.httpVersion} ${defaultHeader.status} OK\r\n`;
+    let string = `${defaultHeader.httpVersion} ${defaultHeader.code} ${defaultHeader.status}\r\n`;
     defaultHeader.headers.forEach( (value, key) => {
         string+=`${key}:${value}\r\n`;
     })
     return string;
 }
 
-export function ResponseInstance(socketWrite:(text:any)=>void):Response {
+export function ResponseInstance(socket: Socket):Response {
     const defaultHeader = new DefaultHeader();
 
     function addHeader(key:string,value:string) {
@@ -48,21 +54,28 @@ export function ResponseInstance(socketWrite:(text:any)=>void):Response {
         })
     }
 
-    function sendText(text:string){
+    function sendText(text:string,status?:string){
+        if(status){
+            defaultHeader.status = status;
+        }
         if(text){
             defaultHeader.headers.set("Content-Length",text.length);
-            socketWrite(spliceHeader(defaultHeader)+"\r\n"+text);
+            socket.write(spliceHeader(defaultHeader)+"\r\n"+text);
         }else {
-            socketWrite(spliceHeader(defaultHeader));
+            socket.write(spliceHeader(defaultHeader));
         }
+        socket.end();
     }
 
     function send(body:any) {
-        socketWrite(`HTTP/1.1 200 OK\r\n`);
-        socketWrite(`Content-Type:image/jpeg\r\n`);
-        socketWrite(`Content-Length:1384\r\n`);
-        socketWrite(`\r\n`);
-        socketWrite(body);
+        defaultHeader.headers.set('Content-Length',body.length);
+
+        socket.write(`${spliceHeader(defaultHeader)}`);
+        socket.write(`\r\n`);
+
+        socket.write(body);
+
+        socket.end();
     }
 
     return { addHeader, addHeaders,sendText, send }
