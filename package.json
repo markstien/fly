@@ -6,7 +6,7 @@
   "scripts": {
     "test:Fly": "tsc && node ./dist/test/testFly.js",
     "test:Router": "tsc && node ./dist/test/RouterTest.js",
-    "test:main": "tsc && node ./dist/test/main.js",
+    "test:scratch": "tsc && node ./dist/test/scratch.js",
     "test:response": "tsc && node ./dist/test/ResponseTest.js",
     "test:axios": "tsc && node ./dist/test/axios.js",
     "start": "tsc && node ./dist/main.js"

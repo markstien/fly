@@ -1,7 +1,8 @@
 import {Method, Request, Routing } from "../interface";
 import { Response } from '../httpParser/response'
 import * as fs from "fs";
-import {fileExtensionHeaderMap, getFileExt} from "./fileExtensionHeaderMap";
+import { fileExtensionHeaderMap, getFileExt } from "./fileExtensionHeaderMap";
+import { access, readFile } from 'fs/promises';
 
 interface StaticPath {
     path:string,
@@ -74,29 +75,29 @@ export class Router {
        this.staticRoutings.set(staticPath.path,staticPath.absolutePath);
     }
 
-    staticHandle(request: Request, response:Response) {
+    async staticHandle(request: Request, response:Response) {
         const { path } = request;
         const absolutePath = findAbsolutePath(path,this.staticRoutings);
 
-        if(absolutePath){
-            fs.readFile(absolutePath,(error,data) => {
-                if(!error){
-                    const fileExt = getFileExt(absolutePath);
-                    const contentType = fileExtensionHeaderMap.get(fileExt);
+        if(absolutePath ){
+            try {
+                await access(absolutePath,fs.constants.R_OK);
+                const data = await readFile(absolutePath);
+                const fileExt = getFileExt(absolutePath);
 
-                    if(contentType){
-                        response.addHeader("Content-Type",contentType);
-                    }
-                    response.send(data);
-                }else {
-                    //500
-                    response.sendText("服务器内部错误！","Internal Server Error",500);
+                const contentType = fileExtensionHeaderMap.get(fileExt);
+                if(contentType){
+                    response.addHeader("Content-Type",contentType);
                 }
-            });
+
+                response.send(data);
+            }catch (e) {
+                //404
+                response.sendText("没有相关文件！","Not Found",404);
+            }
         }else {
             //404
             response.sendText("没有相关文件！","Not Found",404);
-
         }
     }
 }

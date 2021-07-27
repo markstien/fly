@@ -62,9 +62,12 @@ export function ResponseInstance(socket: Socket):Response {
             defaultHeader.code = code;
         }
         defaultHeader.headers.set("Content-Length",Buffer.byteLength(text,'utf-8'));
-        socket.write(spliceHeader(defaultHeader)+
+        const r = spliceHeader(defaultHeader)+
             "\r\n"+
-            text);
+            text
+        console.log(r);
+
+        socket.write(r);
         socket.end();
     }
 

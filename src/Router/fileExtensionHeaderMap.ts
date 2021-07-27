@@ -1,3 +1,7 @@
+/**
+ * 文件拓展名与content-type对照
+ */
+
 export type fileExtension = string;
 export type contentType = string;
 

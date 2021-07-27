@@ -1,3 +1,6 @@
+/**
+ * 解析http请求
+ */
 import {Headers, Method, Request} from "../interface";
 import { getParams } from "./methods/GET";
 /**
