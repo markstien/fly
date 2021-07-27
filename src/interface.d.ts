@@ -1,6 +1,6 @@
 import { Response } from './httpParser/response'
 
-type Method = "GET" | "POST";
+type Method = "GET" | "POST" | "OPTIONS";
 
 type Headers = Map<any,any>;
 
@@ -18,7 +18,7 @@ export interface Request {
  */
 interface Routing {
     method:Method
-    path:string
+    path:string | "*"
     handler(request: Request, response: Response):void
 }
 

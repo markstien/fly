@@ -57,6 +57,10 @@ export class Router {
 
     handle(request: Request, response:Response) {
         const { method, path } = request;
+        if( method == "OPTIONS"){
+            defaultOptionsRouting.handler(request, response);
+            return;
+        }
         if(isStaticRouter(path,this.staticRoutings)){
            this.staticHandle(request, response);
         }else {
@@ -101,3 +105,16 @@ export class Router {
         }
     }
 }
+
+const defaultOptionsRouting: Routing = {
+    method: "OPTIONS",
+    path: "*",
+    handler(request: Request, response: Response) {
+        response.addHeader("Allow","POST");
+        response.addHeader("Access-Control-Allow-Headers","*");
+        response.addHeader("Access-Control-Allow-Origin","*");
+        response.sendText(undefined);
+
+    }
+}
+

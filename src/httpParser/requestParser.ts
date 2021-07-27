@@ -26,7 +26,14 @@ export function methodCheck(method:string):Method {
     let result = "";
     switch (meth) {
         case "GET": result = "GET"; break;
+        case "get": result = "GET"; break;
+
+        case "post": result = "POST"; break;
         case "POST": result = "POST"; break;
+
+        case "options": result = "OPTIONS"; break;
+        case "OPTIONS": result = "OPTIONS"; break;
+
         default: throw new Error("requestParser::methodCheck::无法解析method");
     }
     return <"GET" | "POST">result

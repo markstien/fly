@@ -1,7 +1,7 @@
 /**
  * 拼接响应http报文
  */
-import { Headers } from "../interface";
+import {Headers, Request} from "../interface";
 
 export interface Socket {
     write(data: any): void;
@@ -11,7 +11,7 @@ export interface Socket {
 export interface Response {
     addHeader(key:string,value:string):void
     addHeaders(header: Headers):void
-    sendText(text:string,status?:string,code?:number):void
+    sendText(text:string | undefined,status?:string,code?:number):void
     send(body:any):void
 }
 
@@ -24,8 +24,10 @@ export class DefaultHeader {
     public httpVersion:string = "HTTP/1.1";
     public headers:Headers = new Map<any, any>();
 
-    constructor() {
-        this.headers.set("Content-Type","text/plain; charset=UTF-8");
+    constructor(request: Request) {
+        if(!(request.method === "OPTIONS")){
+            this.headers.set("Content-Type","text/plain; charset=UTF-8");
+        }
     }
 }
 
@@ -41,8 +43,8 @@ export function spliceHeader(defaultHeader: DefaultHeader){
     return string;
 }
 
-export function ResponseInstance(socket: Socket):Response {
-    const defaultHeader = new DefaultHeader();
+export function ResponseInstance(socket: Socket, request: Request):Response {
+    const defaultHeader = new DefaultHeader(request);
 
     function addHeader(key:string,value:string) {
         defaultHeader.headers.set(key,value);
@@ -54,20 +56,20 @@ export function ResponseInstance(socket: Socket):Response {
         })
     }
 
-    function sendText(text:string,status?:string,code?:number){
+    function sendText(text:string | undefined,status?:string,code?:number){
         if(status){
             defaultHeader.status = status;
         }
         if(code){
             defaultHeader.code = code;
         }
-        defaultHeader.headers.set("Content-Length",Buffer.byteLength(text,'utf-8'));
-        const r = spliceHeader(defaultHeader)+
-            "\r\n"+
-            text
-        console.log(r);
-
-        socket.write(r);
+        if(text){
+            defaultHeader.headers.set("Content-Length",Buffer.byteLength(text,'utf-8'));
+            socket.write(spliceHeader(defaultHeader)+ "\r\n"+ text);
+        }else {
+            defaultHeader.headers.set("Content-Length",0);
+            socket.write(spliceHeader(defaultHeader)+ "\r\n");
+        }
         socket.end();
     }
 

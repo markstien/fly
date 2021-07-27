@@ -24,7 +24,7 @@ export class Fly {
 
             socket.on('data',(data) => {
                 const request = requestParser(JSON.stringify(data));
-                const response = ResponseInstance(responseSocket);
+                const response = ResponseInstance(responseSocket,request);
                 this.router.handle(request,response);
             });
 
