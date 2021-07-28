@@ -9,6 +9,7 @@
     "test:scratch": "tsc && node ./dist/test/scratch.js",
     "test:response": "tsc && node ./dist/test/ResponseTest.js",
     "test:axios": "tsc && node ./dist/test/axios.js",
+    "test:requestParser": "tsc && node ./dist/test/requestParserTest.js",
     "start": "tsc && node ./dist/main.js"
   },
   "repository": {

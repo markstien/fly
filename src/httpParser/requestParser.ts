@@ -44,15 +44,14 @@ export function methodCheck(method:string):Method {
  * @param message
  */
 export const requestParser = (message:String):Request => {
+    //去掉头尾的引号
     const httpMessage = message.substring(1,message.length-1);
-
-    const [head,...body] =  httpMessage.split('\\r\\n\\r\\n');
+    const [head,body] =  httpMessage.split('\\r\\n\\r\\n');
     const [firstLine,...otherLines] = head.toString().split('\\r\\n');
-
     const [ method,path,httpVersion] = firstLine.trim().split(' ');
+
     const params = getParams(path);
     const headers = parserRequestHeader(otherLines);
-
 
     return { method:methodCheck(method), path, httpVersion, headers, body, params };
 };

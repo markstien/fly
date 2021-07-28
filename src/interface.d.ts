@@ -8,7 +8,7 @@ export interface Request {
     method:Method,
     path:string,
     params?:Map<any,any>,
-    body?:string[],
+    body?:string,
     headers:Headers,
     httpVersion:string
 }

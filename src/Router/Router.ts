@@ -51,6 +51,18 @@ export function isStaticRouter(path:string,staticRoutings:Map<string,string>):bo
     return false;
 }
 
+const defaultOptionsRouting: Routing = {
+    method: "OPTIONS",
+    path: "*",
+    handler(request: Request, response: Response) {
+        response.addHeader("Allow","POST");
+        response.addHeader("Access-Control-Allow-Headers","*");
+        response.addHeader("Access-Control-Allow-Origin","*");
+        response.sendText(undefined);
+
+    }
+}
+
 export class Router {
     private routingList: Routing[] = [];
     private staticRoutings = new Map<string,string>();
@@ -106,15 +118,4 @@ export class Router {
     }
 }
 
-const defaultOptionsRouting: Routing = {
-    method: "OPTIONS",
-    path: "*",
-    handler(request: Request, response: Response) {
-        response.addHeader("Allow","POST");
-        response.addHeader("Access-Control-Allow-Headers","*");
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.sendText(undefined);
-
-    }
-}
 
