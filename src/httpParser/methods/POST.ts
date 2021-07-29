@@ -1,8 +1,6 @@
 /**
  * post请求常见的几种content-type
  */
-import * as URL from "url";
-
 const contentTypes = [
     "application/json",
     "application/x-www-form-urlencoded"
@@ -31,13 +29,31 @@ export function handleJson(body: string): Handle {
     }
 }
 
+/**
+ * 解析application/x-www-form-urlencoded 格式
+ * @param body
+ */
 export function handleXWWWForm(body: string): Handle {
-    const str = decodeURIComponent(body);
-    //
+    interface ResultObject {
+        [key: string]: any
+    }
+    const result: ResultObject = {};
+    const decodeBody = decodeURIComponent(body);
+    //以'&'分割
+    const params = decodeBody.split('&');
+    const paramLength = params.length;
 
-    return Object;
+    for (let i=0; i<paramLength; i++){
+        const [key,value] = params[i].split('=');
+        result[key] = value;
+    }
+
+    return result;
 }
 
+/**
+ * 未定义的body类型返回undefined
+ */
 export function handleUndefined(): undefined {
     return undefined;
 }
