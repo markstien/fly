@@ -46,7 +46,12 @@ export function methodCheck(method:string):Method {
 export const requestParser = (message:String):Request => {
     //去掉头尾的引号
     const httpMessage = message.substring(1,message.length-1);
-    const [head,body] =  httpMessage.split('\\r\\n\\r\\n');
+
+    const split = '\\r\\n\\r\\n';
+    const half = httpMessage.indexOf(split)
+    const head = httpMessage.substr(0,half);
+    const body = httpMessage.substr(half+split.length);
+    
     const [firstLine,...otherLines] = head.toString().split('\\r\\n');
     const [ method,path,httpVersion] = firstLine.trim().split(' ');
 
