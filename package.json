@@ -2,14 +2,17 @@
   "name": "fly",
   "version": "0.0.1",
   "description": "Fly is light web server.",
-  "main": "main.ts",
+  "main": "./dist/src/Fly.js",
+  "types": "./src/index.d.ts",
+  "files": [
+    "dist",
+    "index.d.ts",
+    "README.md"
+  ],
   "scripts": {
-    "test:Fly": "tsc && node ./dist/test/testFly.js",
-    "test:Router": "tsc && node ./dist/test/RouterTest.js",
-    "test:scratch": "tsc && node ./dist/test/scratch.js",
-    "test:response": "tsc && node ./dist/test/ResponseTest.js",
-    "test:requestParser": "tsc && node ./dist/test/requestParserTest.js",
-    "start": "tsc && node ./dist/main.js",
+    "build": "tsc",
+    "demo": "tsc && node ./dist/demo/index.js",
+    "scratch": "tsc && node ./dist/test/scratch.js",
     "test": "jest"
   },
   "repository": {

@@ -1,34 +1,32 @@
+import { ParamResultInterface } from '../../../index';
+
 /**
  * 获取GET请求参数
- * @param path
+ * @param path http path
  */
-export const getParams = (path: string) => {
-    const result = new Map<any, any>();
+export const getParams = (path: string): ParamResultInterface | undefined => {
+  const result: ParamResultInterface = {};
+  const lastSlash = path.lastIndexOf('/?');
+  if (!(lastSlash > 0)) {
+    return undefined;
+  }
+  const str = path.substring(lastSlash + 2);
 
-    const lastSlash = path.lastIndexOf("/");
-    const paramsString = path.substring(lastSlash + 1);
+  if (str === '') {
+    return undefined;
+  }
 
-    if (paramsString === "") {
-        return undefined;
-    }
+  //以“&”分割
+  const versus = str.split('&');
+  //以“=”分割
+  const length = versus.length;
+  for (let i = 0; i < length; i++) {
+    const v = versus[i];
+    const firstEqualSign = v.indexOf('=');
 
-    //以“？”分割
-    const question = paramsString.split("?")[1];
-    if (!question) {
-        return undefined;
-    }
+    const key = v.substr(0, firstEqualSign);
+    result[key] = v.substr(firstEqualSign + 1);
+  }
 
-    //以“&”分割
-    const versus = question.split("&");
-    //以“=”分割
-    const length = versus.length;
-    for (let i = 0; i < length; i++) {
-        const s = versus[i].split("=");
-        result.set(s[0], s[1]);
-    }
-
-    return result
+  return result;
 };
-
-
-

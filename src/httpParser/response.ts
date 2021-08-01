@@ -1,7 +1,7 @@
 /**
  * 拼接响应http报文
  */
-import { Headers, Request } from '../interface';
+import { Headers, Request } from '../../index';
 
 export interface Socket {
   write(data: any): void;
