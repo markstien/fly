@@ -10,7 +10,8 @@
     "test:response": "tsc && node ./dist/test/ResponseTest.js",
     "test:axios": "tsc && node ./dist/test/axios.js",
     "test:requestParser": "tsc && node ./dist/test/requestParserTest.js",
-    "start": "tsc && node ./dist/main.js"
+    "start": "tsc && node ./dist/main.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -26,7 +27,10 @@
   "author": "Markstien Song",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^26.0.24",
     "@types/node": "^15.9.0",
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.4",
     "typescript": "^4.3.2"
   },
   "dependencies": {
