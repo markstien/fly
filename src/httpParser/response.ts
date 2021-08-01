@@ -1,88 +1,91 @@
 /**
  * 拼接响应http报文
  */
-import {Headers, Request} from "../interface";
+import { Headers, Request } from '../interface';
 
 export interface Socket {
-    write(data: any): void;
-    end(): void;
+  write(data: any): void;
+  end(): void;
 }
 
 export interface Response {
-    addHeader(key:string,value:string):void
-    addHeaders(header: Headers):void
-    sendText(text:string | undefined,status?:string,code?:number):void
-    send(body:any):void
+  addHeader(key: string, value: string): void;
+  addHeaders(header: Headers): void;
+  sendText(text: string | undefined, status?: string, code?: number): void;
+  send(body: any): void;
 }
 
 /**
  * 默认报文，数据类
  */
 export class DefaultHeader {
-    public code:number =200;
-    public status:string = "OK";
-    public httpVersion:string = "HTTP/1.1";
-    public headers:Headers = new Map<any, any>();
+  public code = 200;
+  public status = 'OK';
+  public httpVersion = 'HTTP/1.1';
+  public headers: Headers = new Map<any, any>();
 
-    constructor(request: Request) {
-        if(!(request.method === "OPTIONS")){
-            this.headers.set("Content-Type","text/plain; charset=UTF-8");
-        }
+  constructor(request: Request) {
+    if (!(request.method === 'OPTIONS')) {
+      this.headers.set('Content-Type', 'text/plain; charset=UTF-8');
     }
+  }
 }
 
 /**
  * 将DefaultHeader类转换成响应报文
  * @param defaultHeader
  */
-export function spliceHeader(defaultHeader: DefaultHeader){
-    let string = `${defaultHeader.httpVersion} ${defaultHeader.code} ${defaultHeader.status}\r\n`;
-    defaultHeader.headers.forEach( (value, key) => {
-        string+=`${key}:${value}\r\n`;
-    })
-    return string;
+export function spliceHeader(defaultHeader: DefaultHeader) {
+  let string = `${defaultHeader.httpVersion} ${defaultHeader.code} ${defaultHeader.status}\r\n`;
+  defaultHeader.headers.forEach((value, key) => {
+    string += `${key}:${value}\r\n`;
+  });
+  return string;
 }
 
-export function ResponseInstance(socket: Socket, request: Request):Response {
-    const defaultHeader = new DefaultHeader(request);
+export function ResponseInstance(socket: Socket, request: Request): Response {
+  const defaultHeader = new DefaultHeader(request);
 
-    function addHeader(key:string,value:string) {
-        defaultHeader.headers.set(key,value);
+  function addHeader(key: string, value: string) {
+    defaultHeader.headers.set(key, value);
+  }
+
+  function addHeaders(header: Headers) {
+    header.forEach((value, key) => {
+      defaultHeader.headers.set(key, value);
+    });
+  }
+
+  function sendText(text: string | undefined, status?: string, code?: number) {
+    if (status) {
+      defaultHeader.status = status;
     }
-
-    function addHeaders(header: Headers) {
-        header.forEach( (value,key) =>{
-            defaultHeader.headers.set(key,value);
-        })
+    if (code) {
+      defaultHeader.code = code;
     }
-
-    function sendText(text:string | undefined,status?:string,code?:number){
-        if(status){
-            defaultHeader.status = status;
-        }
-        if(code){
-            defaultHeader.code = code;
-        }
-        if(text){
-            defaultHeader.headers.set("Content-Length",Buffer.byteLength(text,'utf-8'));
-            socket.write(spliceHeader(defaultHeader)+ "\r\n"+ text);
-        }else {
-            defaultHeader.headers.set("Content-Length",0);
-            socket.write(spliceHeader(defaultHeader)+ "\r\n");
-        }
-        socket.end();
+    if (text) {
+      defaultHeader.headers.set(
+        'Content-Length',
+        Buffer.byteLength(text, 'utf-8'),
+      );
+      socket.write(spliceHeader(defaultHeader) + '\r\n' + text);
+    } else {
+      defaultHeader.headers.set('Content-Length', 0);
+      socket.write(spliceHeader(defaultHeader) + '\r\n');
     }
+    socket.end();
+  }
 
-    function send(body:any) {
-        defaultHeader.headers.set('Content-Length',body.length);
+  function send(body: any) {
+    defaultHeader.headers.set('Content-Length', body.length);
 
-        socket.write(`${spliceHeader(defaultHeader)}`);
-        socket.write(`\r\n`);
+    socket.write(`${spliceHeader(defaultHeader)}`);
+    socket.write(`\r\n`);
 
-        socket.write(body);
+    socket.write(body);
 
-        socket.end();
-    }
+    socket.end();
+  }
 
-    return { addHeader, addHeaders,sendText, send }
+  return { addHeader, addHeaders, sendText, send };
 }

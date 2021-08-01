@@ -12,7 +12,7 @@ export const fileExtensionHeaderMap = new Map<fileExtension,contentType>([
     ["mp4"," video/mpeg4"],
 ]);
 
-export function getFileExt(absolutePath:string) {
+export function getFileExt(absolutePath:string):string {
     const afterSplit = absolutePath.split(".");
     return afterSplit[afterSplit.length-1];
 }

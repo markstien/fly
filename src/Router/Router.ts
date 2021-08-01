@@ -22,9 +22,9 @@ export function findRouting(method:Method, path:string,routingList: Routing[]) {
 }
 
 export function findAbsolutePath(path:string,staticRoutings:Map<string,string>):string |undefined{
-    for (let entry of Array.from(staticRoutings.entries())) {
-        let key = entry[0];//path
-        let value = entry[1];//absolutePath
+    for (const entry of Array.from(staticRoutings.entries())) {
+        const key = entry[0];//path
+        const value = entry[1];//absolutePath
 
         if (path===key || path===key+"/"){
             return value;
