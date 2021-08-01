@@ -3,6 +3,7 @@
  */
 import {Headers, Method, Request} from "../interface";
 import { getParams } from "./methods/GET";
+import {getBodyParam} from "./methods/POST";
 /**
  * 将报文头部转换为Headers类型
  * @param headerLines 一行报文头
@@ -51,14 +52,22 @@ export const requestParser = (message:String):Request => {
     const half = httpMessage.indexOf(split)
     const head = httpMessage.substr(0,half);
     const body = httpMessage.substr(half+split.length);
-    
+
     const [firstLine,...otherLines] = head.toString().split('\\r\\n');
     const [ method,path,httpVersion] = firstLine.trim().split(' ');
 
-    const params = getParams(path);
     const headers = parserRequestHeader(otherLines);
+    //GET参数
+    const GETParams = getParams(path);
+    //POST参数
+    const POSTParams = getBodyParam(body,headers.get("Content-Type"));
 
-    return { method:methodCheck(method), path, httpVersion, headers, body, params };
+    return {
+        method:methodCheck(method),
+        path, httpVersion, headers,
+        body:POSTParams,
+        params: GETParams
+    };
 };
 
 

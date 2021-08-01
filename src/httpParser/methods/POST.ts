@@ -65,5 +65,9 @@ const maps = new Map<any, any>([
 ]);
 
 export function getBodyParam(body:string, contentType: string) {
-    return maps.get(whichContentTypeContained(contentType))(body);
+    if(body && contentType){
+        return maps.get(whichContentTypeContained(contentType))(body);
+    }else {
+        return undefined;
+    }
 }

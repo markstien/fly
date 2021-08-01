@@ -20,6 +20,7 @@ fly.router.add({
     method: "POST",
     path: "/",
     handler(request: Request, response: Response) {
+        console.log(request.body);
         response.addHeader("Access-Control-Allow-Origin","*");
         response.sendText("Hello!");
     }
