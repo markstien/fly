@@ -8,7 +8,6 @@
     "test:Router": "tsc && node ./dist/test/RouterTest.js",
     "test:scratch": "tsc && node ./dist/test/scratch.js",
     "test:response": "tsc && node ./dist/test/ResponseTest.js",
-    "test:axios": "tsc && node ./dist/test/axios.js",
     "test:requestParser": "tsc && node ./dist/test/requestParserTest.js",
     "start": "tsc && node ./dist/main.js",
     "test": "jest"
@@ -34,6 +33,6 @@
     "typescript": "^4.3.2"
   },
   "dependencies": {
-    "axios": "^0.21.1"
+
   }
 }
