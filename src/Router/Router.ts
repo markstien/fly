@@ -1,5 +1,5 @@
-import { Method, Request, Routing } from '../../index';
-import { Response } from '../httpParser/response';
+import { Method, Request, Routing } from '../index';
+import { Response } from '../index';
 import * as fs from 'fs';
 import { fileExtensionHeaderMap, getFileExt } from './fileExtensionHeaderMap';
 import { access, readFile } from 'fs/promises';

@@ -1,18 +1,12 @@
 /**
  * 拼接响应http报文
  */
-import { Headers, Request } from '../../index';
+import { Headers, Request } from '../index';
+import { Response } from '../index';
 
 export interface Socket {
   write(data: any): void;
   end(): void;
-}
-
-export interface Response {
-  addHeader(key: string, value: string): void;
-  addHeaders(header: Headers): void;
-  sendText(text: string | undefined, status?: string, code?: number): void;
-  send(body: any): void;
 }
 
 /**

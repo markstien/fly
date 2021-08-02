@@ -1,7 +1,7 @@
 /**
  * 解析http请求
  */
-import { Headers, Method, Request } from '../../index';
+import { Headers, Method, Request } from '../index';
 import { getParams } from './methods/GET';
 import { getBodyParam } from './methods/POST';
 /**

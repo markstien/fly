@@ -1,4 +1,4 @@
-import { ParamResultInterface } from '../../../index';
+import { ParamResultInterface } from '../../index';
 
 /**
  * 获取GET请求参数

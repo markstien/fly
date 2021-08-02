@@ -1,12 +1,11 @@
 {
-  "name": "fly",
-  "version": "0.0.1",
+  "name": "@markstien/fly",
+  "version": "0.0.8",
   "description": "Fly is light web server.",
   "main": "./dist/src/Fly.js",
-  "types": "./src/index.d.ts",
+  "types": "./dist/src/index.d.ts",
   "files": [
     "dist",
-    "index.d.ts",
     "README.md"
   ],
   "scripts": {

@@ -1,13 +1,19 @@
-import { Fly } from '../src/Fly';
-import { Request, Routing } from '../index';
-import { Response } from '../src/httpParser/response';
+import { fly } from '../src';
+import { Request, Routing, Response } from '../src';
 
-const fly = new Fly();
+async function sleep(ms: number) {
+  return new Promise<void>((resolve: () => void) => {
+    setTimeout(function () {
+      resolve();
+    }, ms * 1000);
+  });
+}
 
 const firstRouting: Routing = {
   method: 'GET',
   path: '/',
-  handler(request: Request, response: Response) {
+  async handler(request: Request, response: Response) {
+    //await sleep(10);
     response.sendText('Hello,world!');
   },
 };

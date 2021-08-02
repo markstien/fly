@@ -11,13 +11,13 @@ Fly is a web server.
 
 4.能够通过页面对数据库进行操作，如增删查改等操作。
 
-## 功能实现
+## 模块架构
 
-### Fly::run()
+### Fly类
 
 创建并监听端口
 
-### requestParser
+### requestParser函数
 
 解析http协议,具体实现POST,GET,PUT.....等
 
@@ -25,6 +25,17 @@ Fly is a web server.
 
 实现路由功能，用于编写接口
 
-### Handler 
+## 已实现功能
 
-多线程、协程，用来相应http请求
+### GET
+
+### POST 
+
+- [x] application/x-www-form-urlencoded
+- [x] application/json
+- [ ] multipart/form-data
+
+### 静态文件服务
+
+### 多语言CGI
+
