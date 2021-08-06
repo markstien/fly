@@ -1,5 +1,6 @@
 import { Fly } from './Fly';
 import { Socket } from './httpParser/response';
+export * from './cgi/index';
 
 /**
  * 现阶段支持的http方法

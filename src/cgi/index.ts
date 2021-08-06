@@ -12,7 +12,7 @@ export function cgi(
   absolutePath: string,
 ): Promise<string | undefined> {
   return new Promise((resolve, reject) => {
-    console.log(absolutePath,env);
+    console.log(absolutePath, env);
     exec(absolutePath, { env }, function (error, stdout, stderr) {
       if (error || stderr) {
         reject(null);

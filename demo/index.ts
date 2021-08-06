@@ -2,14 +2,6 @@ import { fly } from '../src';
 import { Request, Routing, Response } from '../src';
 import { cgi } from '../src/cgi';
 
-async function sleep(ms: number) {
-  return new Promise<void>((resolve: () => void) => {
-    setTimeout(function () {
-      resolve();
-    }, ms * 1000);
-  });
-}
-
 const firstRouting: Routing = {
   method: 'GET',
   path: '/',
