@@ -1,18 +1,10 @@
+import { cgi } from '../src/cgi';
+import * as path from 'path';
+
 /*
-import axios from 'axios';
-function main() {
-  for (let i = 0; i < 1000; i++) {
-    console.time(`a${i}`);
-    axios({
-      method: 'get',
-      url: 'http://localhost:8080',
-    }).then(() => {
-      console.timeEnd(`a${i}`);
-    });
-  }
-}
-
-main();
-
+cgi({ FUCK: 'fuck' }, path.join()).then(
+  console.log,
+);
 */
 
+console.log(path.join(__dirname, 'cgi-cgi.exe'));

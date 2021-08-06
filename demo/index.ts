@@ -1,5 +1,6 @@
 import { fly } from '../src';
 import { Request, Routing, Response } from '../src';
+import { cgi } from '../src/cgi';
 
 async function sleep(ms: number) {
   return new Promise<void>((resolve: () => void) => {
@@ -21,6 +22,19 @@ const firstRouting: Routing = {
 fly.router.staticRouter({
   path: '/static',
   absolutePath: 'D:/Fly/demo/static',
+});
+
+fly.router.add({
+  path: '/cgi',
+  method: 'GET',
+  handler(request: Request, response: Response) {
+    cgi({ FUCK: 'hama' }, 'D:/Fly/test/cgi_cgi.exe')
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      .then((e) => {
+        response.sendText(e);
+      })
+      .catch(() => response.sendText('501内部错误', '501 internal error', 501));
+  },
 });
 
 fly.router.add(firstRouting);

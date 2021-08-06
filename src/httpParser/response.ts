@@ -80,6 +80,5 @@ export function ResponseInstance(socket: Socket, request: Request): Response {
 
     socket.end();
   }
-
-  return { addHeader, addHeaders, sendText, send };
+  return { addHeader, addHeaders, sendText, send, socket };
 }
