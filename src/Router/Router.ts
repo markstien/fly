@@ -1,4 +1,4 @@
-import { Method, Request, Routing } from '../index';
+import { Method, Module, Request, Routing } from '../index';
 import { Response } from '../index';
 import * as fs from 'fs';
 import { fileExtensionHeaderMap, getFileExt } from './fileExtensionHeaderMap';
@@ -96,8 +96,11 @@ export class Router {
     }
   }
 
-  add(routing: Routing) {
-    this.routingList.push(routing);
+  addMany(modules: Module[]) {
+    modules.map((module) => {
+      const routings = Object.values(module);
+      this.routingList.push(...routings);
+    });
   }
 
   staticRouter(staticPath: StaticPath) {

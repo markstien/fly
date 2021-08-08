@@ -42,5 +42,13 @@ export interface Routing {
   path: string | '*';
   handler(request: Request, response: Response): void;
 }
+/**
+ * 多条路由规则
+ */
+export interface Module {
+  [key: string]: Routing;
+}
 
-export const fly = new Fly();
+export function createFly(modules: Module[]) {
+  return new Fly(modules);
+}

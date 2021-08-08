@@ -2,13 +2,16 @@ import net from 'net';
 import { requestParser } from './httpParser/requestParser';
 import { Router } from './Router/Router';
 import { ResponseInstance, Socket } from './httpParser/response';
+import { Module } from './index';
 
 export class Fly {
-  public router = new Router();
-  private PORT = 9090;
-  private server: net.Server;
+  private router = new Router();
+  private port: number | undefined;
+  private readonly server: net.Server;
 
-  constructor() {
+  constructor(modules: Module[]) {
+    this.router.addMany(modules);
+
     this.server = net.createServer();
 
     this.server.on('connection', (socket) => {
@@ -24,7 +27,6 @@ export class Fly {
 
       socket.on('data', (data) => {
         const request = requestParser(JSON.stringify(data));
-        console.log(request);
         const response = ResponseInstance(responseSocket, request);
         this.router.handle(request, response);
       });
@@ -34,7 +36,7 @@ export class Fly {
       });
 
       socket.on('error', (error) => {
-        console.log('socket错误：', error);
+        console.error('socket错误：', error);
       });
     });
 
@@ -43,9 +45,12 @@ export class Fly {
     });
   }
 
-  run(port: number, callback: (port: number) => void): void {
-    this.PORT = port;
-    this.server.listen(this.PORT);
-    this.server.on('listening', () => callback(this.PORT));
+  start(port = 80): Promise<void> {
+    this.port = port;
+    this.server.listen(this.port);
+    const server = this.server;
+    return new Promise((resolve) => {
+      server.on('listening', resolve);
+    });
   }
 }

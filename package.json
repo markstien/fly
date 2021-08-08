@@ -9,6 +9,7 @@
     "README.md"
   ],
   "scripts": {
+    "build-test": "tsc --outDir D:/fly-test/node_modules/@markstien/fly/dist",
     "build": "tsc",
     "demo": "tsc && node ./dist/demo/index.js",
     "scratch": "tsc && node ./dist/test/scratch.js",

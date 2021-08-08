@@ -22,11 +22,8 @@ export function whichContentTypeContained(
 }
 
 export function handleJson(body: string): Handle {
-  try {
-    return JSON.parse(body);
-  } catch (e) {
-    return null;
-  }
+  const a = body.replace(/(\\n)/g, '').replace(/(\\)/g, '');
+  return JSON.parse(a);
 }
 
 /**
