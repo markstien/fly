@@ -1,6 +1,6 @@
 import { fly } from '../src';
 import { Request, Routing, Response } from '../src';
-import { cgi } from '../src/cgi';
+import { cgi } from '../src';
 
 const firstRouting: Routing = {
   method: 'GET',

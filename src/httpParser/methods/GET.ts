@@ -6,11 +6,11 @@ import { ParamResultInterface } from '../../index';
  */
 export const getParams = (path: string): ParamResultInterface | undefined => {
   const result: ParamResultInterface = {};
-  const lastSlash = path.lastIndexOf('/?');
-  if (!(lastSlash > 0)) {
+  const lastSlash = path.lastIndexOf('?');
+  if (lastSlash === -1) {
     return undefined;
   }
-  const str = path.substring(lastSlash + 2);
+  const str = path.substring(lastSlash + 1);
 
   if (str === '') {
     return undefined;

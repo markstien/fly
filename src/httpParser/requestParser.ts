@@ -54,6 +54,18 @@ export function methodCheck(method: string): Method {
 }
 
 /**
+ * 获取请求路径
+ * @param pathWithParams
+ */
+export function getPath(pathWithParams: string): string {
+  const i = pathWithParams.lastIndexOf('?');
+  if (i === -1) {
+    return pathWithParams;
+  }
+  return pathWithParams.substr(0, i);
+}
+
+/**
  * 将请求报文转换成Request对象
  * @param message
  */
@@ -67,17 +79,17 @@ export const requestParser = (message: string): Request => {
   const body = httpMessage.substr(half + split.length);
 
   const [firstLine, ...otherLines] = head.toString().split('\\r\\n');
-  const [method, path, httpVersion] = firstLine.trim().split(' ');
+  const [method, pathWithParams, httpVersion] = firstLine.trim().split(' ');
 
   const headers = parserRequestHeader(otherLines);
   //GET参数
-  const GETParams = getParams(path);
+  const GETParams = getParams(pathWithParams);
   //POST参数
   const POSTParams = getBodyParam(body, headers.get('Content-Type'));
 
   return {
     method: methodCheck(method),
-    path,
+    path: getPath(pathWithParams),
     httpVersion,
     headers,
     body: POSTParams,
