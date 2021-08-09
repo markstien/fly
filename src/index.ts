@@ -1,5 +1,5 @@
 import { Fly } from './Fly';
-import { Socket } from './httpParser/response';
+import { Socket } from './Response/Response';
 export * from './cgi/index';
 
 /**

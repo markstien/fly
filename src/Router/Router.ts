@@ -3,6 +3,7 @@ import { Response } from '../index';
 import * as fs from 'fs';
 import { fileExtensionHeaderMap, getFileExt } from './fileExtensionHeaderMap';
 import { access, readFile } from 'fs/promises';
+import { getLogger } from 'log4js';
 
 interface StaticPath {
   path: string;
@@ -97,10 +98,18 @@ export class Router {
   }
 
   addMany(modules: Module[]) {
+    const logger = getLogger();
+    logger.level = 'debug';
+
     modules.map((module) => {
       const routings = Object.values(module);
       this.routingList.push(...routings);
     });
+
+    logger.mark('接口');
+    this.routingList.map((routing) =>
+      logger.info(routing.method, routing.path),
+    );
   }
 
   staticRouter(staticPath: StaticPath) {
