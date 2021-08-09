@@ -16,6 +16,7 @@ export interface Response {
   addHeaders(header: Headers): void;
   sendText(text: string | undefined, status?: string, code?: number): void;
   send(body: any): void;
+  enableCROS(): void;
   socket: Socket;
 }
 

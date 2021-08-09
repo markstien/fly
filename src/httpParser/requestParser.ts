@@ -69,8 +69,7 @@ export function getPath(pathWithParams: string): string {
  * 将请求报文转换成Request对象
  * @param message
  */
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+
 export const requestParser = (message: string): Request => {
   //去掉头尾的引号
   const httpMessage = message.substring(1, message.length - 1);
@@ -80,7 +79,6 @@ export const requestParser = (message: string): Request => {
 
   const head = httpMessage.substr(0, half);
   const body = httpMessage.substr(half + split.length);
-  console.log('body', body);
 
   const [firstLine, ...otherLines] = head.toString().split('\\r\\n');
   const [method, pathWithParams, httpVersion] = firstLine.trim().split(' ');

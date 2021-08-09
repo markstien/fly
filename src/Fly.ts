@@ -8,6 +8,7 @@ export class Fly {
   private router = new Router();
   private port: number | undefined;
   private readonly server: net.Server;
+  private CROSEnabled = false;
 
   constructor(modules: Module[]) {
     this.router.addMany(modules);
@@ -28,6 +29,7 @@ export class Fly {
       socket.on('data', (data) => {
         const request = requestParser(JSON.stringify(data));
         const response = ResponseInstance(responseSocket, request);
+        this.CROSEnabled ? response.enableCROS() : '';
         this.router.handle(request, response);
       });
 
@@ -52,5 +54,12 @@ export class Fly {
     return new Promise((resolve) => {
       server.on('listening', resolve);
     });
+  }
+
+  /**
+   * 开启跨域
+   */
+  enableCROS() {
+    this.CROSEnabled = true;
   }
 }

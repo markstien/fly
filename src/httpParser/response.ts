@@ -80,5 +80,17 @@ export function ResponseInstance(socket: Socket, request: Request): Response {
 
     socket.end();
   }
-  return { addHeader, addHeaders, sendText, send, socket };
+
+  function enableCROS() {
+    defaultHeader.headers.set('Access-Control-Allow-Origin', '*');
+  }
+
+  return {
+    addHeader,
+    addHeaders,
+    sendText,
+    send,
+    socket,
+    enableCROS,
+  };
 }
