@@ -5,7 +5,7 @@ import { fileExtensionHeaderMap, getFileExt } from './fileExtensionHeaderMap';
 import { access, readFile } from 'fs/promises';
 import { getLogger } from 'log4js';
 
-interface StaticPath {
+export interface StaticRouting {
   path: string;
   absolutePath: string;
 }
@@ -112,8 +112,8 @@ export class Router {
     );
   }
 
-  staticRouter(staticPath: StaticPath) {
-    this.staticRoutings.set(staticPath.path, staticPath.absolutePath);
+  staticRouter(staticRouting: StaticRouting) {
+    this.staticRoutings.set(staticRouting.path, staticRouting.absolutePath);
   }
 
   async staticHandle(request: Request, response: Response) {

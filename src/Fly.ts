@@ -1,6 +1,6 @@
 import net from 'net';
 import { requestParser } from './httpParser/requestParser';
-import { Router } from './Router/Router';
+import { Router, StaticRouting } from './Router/Router';
 import { ResponseInstance, Socket } from './Response/Response';
 import { Module } from './index';
 
@@ -61,5 +61,9 @@ export class Fly {
    */
   enableCROS() {
     this.CROSEnabled = true;
+  }
+
+  staticServer(staticRouting: StaticRouting) {
+    this.router.staticRouter(staticRouting);
   }
 }
