@@ -10,6 +10,8 @@ export const fileExtensionHeaderMap = new Map<fileExtension, contentType>([
   ['html', 'text/html'],
   ['txt', ' text/plain'],
   ['mp4', ' video/mpeg4'],
+  ['css', 'text/css'],
+  ['js', ' application/x-javascript'],
 ]);
 
 export function getFileExt(absolutePath: string): string {

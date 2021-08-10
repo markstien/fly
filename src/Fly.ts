@@ -34,7 +34,9 @@ export class Fly {
       });
 
       socket.on('close', (hadError) => {
-        console.log('socket关闭是否有误:', hadError);
+        if (hadError) {
+          console.log('socket关闭有误:', hadError);
+        }
       });
 
       socket.on('error', (error) => {

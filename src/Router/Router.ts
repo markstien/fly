@@ -81,14 +81,14 @@ export class Router {
   private routingList: Routing[] = [];
   private staticRoutings = new Map<string, string>();
 
-  handle(request: Request, response: Response) {
+  async handle(request: Request, response: Response) {
     const { method, path } = request;
     if (method == 'OPTIONS') {
       defaultOptionsRouting.handler(request, response);
       return;
     }
     if (isStaticRouter(path, this.staticRoutings)) {
-      this.staticHandle(request, response);
+      await this.staticHandle(request, response);
     } else {
       const routing = findRouting(method, path, this.routingList);
       if (routing) {
@@ -124,9 +124,10 @@ export class Router {
       try {
         await access(absolutePath, fs.constants.R_OK);
         const data = await readFile(absolutePath);
-        const fileExt = getFileExt(absolutePath);
 
+        const fileExt = getFileExt(absolutePath);
         const contentType = fileExtensionHeaderMap.get(fileExt);
+
         if (contentType) {
           response.addHeader('Content-Type', contentType);
         }
