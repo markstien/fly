@@ -11,31 +11,20 @@ Fly is a web server.
 
 4.能够通过页面对数据库进行操作，如增删查改等操作。
 
-## 模块架构
 
-### Fly类
+## 快速开始
 
-创建并监听端口
+#### 安装
+```shell
+git clone https://gitee.com/markstien/fly-hello.git
+cd fly-hello
+npm i 
+```
 
-### requestParser函数
+#### 运行
 
-解析http协议,具体实现POST,GET,PUT.....等
+```shell
+npm start
+```
 
-### Router  
-
-实现路由功能，用于编写接口
-
-## 已实现功能
-
-### GET
-
-### POST 
-
-- [x] application/x-www-form-urlencoded
-- [x] application/json
-- [ ] multipart/form-data
-
-### 静态文件服务
-
-### 多语言CGI
-
+Fly 运行在  `http://localhost:8080`.
