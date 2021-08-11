@@ -37,7 +37,6 @@ export function spliceHeader(defaultHeader: DefaultHeader) {
   return string;
 }
 
-
 export function ResponseInstance(socket: Socket, request: Request): Response {
   const defaultHeader = new DefaultHeader(request);
 

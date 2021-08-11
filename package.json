@@ -1,6 +1,6 @@
 {
   "name": "@markstien/fly",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Fly is light web server.",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
@@ -9,11 +9,9 @@
     "README.md"
   ],
   "scripts": {
-    "build-test": "tsc --outDir D:/fly-test/node_modules/@markstien/fly/dist",
     "build": "tsc",
-    "demo": "tsc && node ./dist/demo/index.js",
-    "scratch": "tsc && node ./dist/test/scratch.js",
-    "test": "jest"
+    "test": "jest",
+    "publish": "npm publish -access=public"
   },
   "repository": {
     "type": "git",
