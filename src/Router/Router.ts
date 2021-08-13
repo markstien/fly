@@ -5,7 +5,11 @@ import { fileExtensionHeaderMap, getFileExt } from './fileExtensionHeaderMap';
 import { access, readFile } from 'fs/promises';
 import { getLogger } from 'log4js';
 
-export interface StaticRouting {
+export type path = string;
+export type absolutePath = string;
+export type StaticRoutings = Map<path, absolutePath>;
+
+export interface StaticRoutingDTO {
   path: string;
   absolutePath: string;
 }
@@ -26,46 +30,6 @@ export function findRouting(
   return null;
 }
 
-export function findAbsolutePath(
-  path: string,
-  staticRoutings: Map<string, string>,
-): string | undefined {
-  for (const entry of Array.from(staticRoutings.entries())) {
-    const key = entry[0]; //path
-    const value = entry[1]; //absolutePath
-
-    if (path === key || path === key + '/') {
-      return value;
-    } else if (path.startsWith(key + '/')) {
-      return value + path.substring(key.length);
-    }
-  }
-  return undefined;
-}
-
-/**
- *
- * @param path 路由路径 如 /static/a/b/c.jpg
- * @param staticRoutings 路由规则
- * @return
- */
-export function isStaticRouter(
-  path: string,
-  staticRoutings: Map<string, string>,
-): boolean {
-  const paths = Array.from(staticRoutings.keys());
-  for (let i = 0; i < paths.length; i++) {
-    if (
-      path === paths[i] ||
-      path === paths[i] + '/' ||
-      path.startsWith(paths[i] + '/')
-    ) {
-      return true;
-    }
-  }
-  return false;
-}
-
 const defaultOptionsRouting: Routing = {
   method: 'OPTIONS',
   path: '*',
@@ -77,69 +41,117 @@ const defaultOptionsRouting: Routing = {
   },
 };
 
+async function staticHandler(
+  absolutePath: string,
+  request: Request,
+  response: Response,
+) {
+  if (absolutePath) {
+    try {
+      await access(absolutePath, fs.constants.R_OK);
+      const data = await readFile(absolutePath);
+
+      const fileExt = getFileExt(absolutePath);
+      const contentType = fileExtensionHeaderMap.get(fileExt);
+
+      if (contentType) {
+        response.addHeader('Content-Type', contentType);
+      }
+
+      response.send(data);
+    } catch (e) {
+      //404
+      response.sendText('没有相关文件！', 'Not Found', 404);
+    }
+  } else {
+    //404
+    response.sendText('没有相关文件！', 'Not Found', 404);
+  }
+}
+
+export function isFile(path: string) {
+  return path.substr(path.lastIndexOf('/')).includes('.');
+}
+
+/**
+ *
+ * @param requestPath  url请求路径
+ * @param staticRoutings
+ * @return 文件绝对路径 | undefined
+ */
+export function findStaticRouting(
+  requestPath: path,
+  staticRoutings: StaticRoutings,
+) {
+  const paths = Array.from(staticRoutings.keys());
+  const length = paths.length;
+
+  for (let i = 0; i < length; i++) {
+    const staticPath = paths[i];
+    if (requestPath.includes(staticPath)) {
+      const subRequestPath = '/' + requestPath.substr(staticPath.length);
+      const starts = staticRoutings.get(staticPath);
+      if (isFile(subRequestPath)) {
+        return starts + subRequestPath;
+      } else {
+        if (subRequestPath.endsWith('/')) {
+          return starts + subRequestPath + 'index.html';
+        } else {
+          return starts + subRequestPath + '/index.html';
+        }
+      }
+    }
+  }
+  //不存在路由
+  return undefined;
+}
+
 export class Router {
   private routingList: Routing[] = [];
-  private staticRoutings = new Map<string, string>();
+  private staticRoutings: StaticRoutings = new Map<path, absolutePath>();
+  private logger = getLogger();
+
+  constructor() {
+    this.logger.level = 'debug';
+  }
 
   async handle(request: Request, response: Response) {
     const { method, path } = request;
+
     if (method == 'OPTIONS') {
       defaultOptionsRouting.handler(request, response);
       return;
     }
-    if (isStaticRouter(path, this.staticRoutings)) {
-      await this.staticHandle(request, response);
+
+    const absolutePath = findStaticRouting(path, this.staticRoutings);
+    if (absolutePath) {
+      await staticHandler(absolutePath, request, response);
+      return;
+    }
+
+    const routing = findRouting(method, path, this.routingList);
+    if (routing) {
+      routing.handler(request, response);
+      return;
     } else {
-      const routing = findRouting(method, path, this.routingList);
-      if (routing) {
-        routing.handler(request, response);
-      }
+      console.log('no routing for: ' + path);
     }
   }
 
   addMany(modules: Module[]) {
-    const logger = getLogger();
-    logger.level = 'debug';
-
     modules.map((module) => {
       const routings = Object.values(module);
       this.routingList.push(...routings);
     });
 
-    logger.mark('接口');
+    this.logger.mark('接口');
     this.routingList.map((routing) =>
-      logger.info(routing.method, routing.path),
+      this.logger.info(routing.method, routing.path),
     );
   }
 
-  staticRouter(staticRouting: StaticRouting) {
+  addStatic(staticRouting: StaticRoutingDTO) {
+    this.logger.info(staticRouting.path, staticRouting.absolutePath);
     this.staticRoutings.set(staticRouting.path, staticRouting.absolutePath);
-  }
-
-  async staticHandle(request: Request, response: Response) {
-    const { path } = request;
-    const absolutePath = findAbsolutePath(path, this.staticRoutings);
-
-    if (absolutePath) {
-      try {
-        await access(absolutePath, fs.constants.R_OK);
-        const data = await readFile(absolutePath);
-
-        const fileExt = getFileExt(absolutePath);
-        const contentType = fileExtensionHeaderMap.get(fileExt);
-
-        if (contentType) {
-          response.addHeader('Content-Type', contentType);
-        }
-
-        response.send(data);
-      } catch (e) {
-        //404
-        response.sendText('没有相关文件！', 'Not Found', 404);
-      }
-    } else {
-      //404
-      response.sendText('没有相关文件！', 'Not Found', 404);
-    }
   }
 }
