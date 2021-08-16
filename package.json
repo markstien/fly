@@ -1,7 +1,7 @@
 {
   "name": "@markstien/fly",
-  "version": "1.0.2",
-  "description": "Fly is light web server.",
+  "version": "1.0.3",
+  "description": "Fly is a toy web server.",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
   "files": [
@@ -37,9 +37,7 @@
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.4",
-    "typescript": "^4.3.5"
-  },
-  "dependencies": {
+    "typescript": "^4.3.5",
     "log4js": "^6.3.0"
   }
 }
